@@ -1,5 +1,4 @@
 import cv2
-from matplotlib import pyplot as plt
 def dispense(food):
     return True
 def captureImage():
@@ -19,20 +18,25 @@ pennyWait = 0
 tigerFound = False
 tigerWait = 0
 tigerFood = 3
-face_cascade = cv2.CascadeClassifier('catfaces.xml')
-img = cv2.imread("TestTabby.jpg")
+img = cv2.imread("tabby.jpg")
+img = cv2.resize(img,(400,534))
+
+face_cascade = cv2.CascadeClassifier('catface.xml')
 img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-faces = face_cascade.detectMultiScale(img_gray,1,5)
-for (x,y,w,h) in faces:  
-    # To draw a rectangle in a face  
-    cv2.rectangle(img,(x,y),(x+w,y+h),(255,255,0),2)  
-    roi_gray = img_gray[y:y+h, x:x+w]  
-    roi_color = img[y:y+h, x:x+w]  
-#cv2.imshow('img',img_rgb)
-# plt.subplot(1, 1, 1)
-# plt.imshow(img_rgb)
-# plt.show()
+faces = face_cascade.detectMultiScale(img_gray,minSize=(20,20))
+if len(faces)!=0:
+    for (x,y,w,h) in faces:  
+        cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)  
+        print(len(faces))
+else:
+    print("no faces")
+
+while True:
+    cv2.imshow('img',img)
+    key = cv2.waitKey(0)
+    if key == 27:  
+        break
+
 if motionDetected:
     img = captureImage()
     if pennyFound:

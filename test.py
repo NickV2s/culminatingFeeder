@@ -18,12 +18,13 @@ pennyWait = 0
 tigerFound = False
 tigerWait = 0
 tigerFood = 3
-img = cv2.imread("tabby.jpg")
-img = cv2.resize(img,(400,534))
+img = cv2.imread("Tiger.jpg")
+#img = cv2.resize(img,(700,935))
+img = cv2.resize(img,(900,1200))
 
-face_cascade = cv2.CascadeClassifier('catface.xml')
+face_cascade = cv2.CascadeClassifier('catfacesExtended.xml')
 img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-faces = face_cascade.detectMultiScale(img_gray,minSize=(20,20))
+faces = face_cascade.detectMultiScale(img_gray,1.2,2,minSize=(30,30))
 if len(faces)!=0:
     for (x,y,w,h) in faces:  
         cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)  

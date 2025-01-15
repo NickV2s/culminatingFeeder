@@ -20,7 +20,7 @@ pennyFood = 2
 tigerFood = 3
 # img = cv2.imread("Tiger.jpg")
 #img = cv2.resize(img,(700,935))
-# img = cv2.resize(img,(900,1200))
+# img = cv2.resize(img,(900,1200))  
 
 face_cascade = cv2.CascadeClassifier('catfacesExtended.xml')
 cap = cv2.VideoCapture(0)

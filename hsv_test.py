@@ -37,16 +37,19 @@ def compareImgData(file1:str,file2:str):
     percentage = 0.0
     catData1=readImgData(file1)
     catData2=readImgData(file2)
-
+    for i in range(0,5000):
+        if catData1[i] == catData2[i]:
+            percentage+=1
+    percentage = percentage/50.0
     return percentage
-img1 = cv2.imread("pennyTest.jpg")
+img1 = cv2.imread("Tiger.jpg")
 img2 = cv2.imread("pennyTest.jpg")
 face_cascade = cv2.CascadeClassifier("catfacesExtended.xml")
 rgb = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
 #plt.figure()
 #gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2HSV)
 #gray = cv2.resize(gray,(480,640))
-faces = face_cascade.detectMultiScale(rgb,1.2,2,minSize=(30,30))
+faces = face_cascade.detectMultiScale(rgb,1.2,2,minSize=(100,100))
 
 for (x,y,w,h) in faces:  
     cv2.rectangle(rgb,(x,y),(x+w,y+h),(0,255,0),2)
@@ -55,8 +58,8 @@ for (x,y,w,h) in faces:
     centerX = int(w/2)
     centerY = int(h/2) 
     data = []
-    for row in range(centerX-25,centerX+25):
-        for col in range(centerY-25,centerY+25):
+    for row in range(centerX-120,centerX-70):
+        for col in range(centerY-50,centerY+50):
             r, g, b = cropped[row, col]
             print(f"Pixel {row*25+col} at (row {row}, col {col}): [{r}, {g}, {b}]")
             newline = [r,g,b]
@@ -74,11 +77,12 @@ for (x,y,w,h) in faces:
     #         cropped[centerY+j,centerX+i] = (255,0,0)
 
     saveImgData(UNKNOWN_CAT,data)
-    pennyList=readImgData(PENNY_DATA)
-    print(pennyList)
+    #saveImgData(PENNY_DATA, data)
+    print(compareImgData(UNKNOWN_CAT,TIGER_DATA))
+    print(compareImgData(UNKNOWN_CAT,PENNY_DATA))
 
     print(len(faces))
-plt.imshow(cropped)
+plt.imshow(rgb)
 plt.show()
 
 key = cv2.waitKey(0)

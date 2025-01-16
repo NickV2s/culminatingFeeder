@@ -56,7 +56,7 @@ def waitTime(filename,cat:list):
         waitTime = time + timedelta(hours=cat[2])
         print(waitTime)
     f = open(filename, "w")
-    if cat[0]==1:
+    if cat[0]==0:
         f.write(str(waitTime) +"," + temp[1])
     else:
         f.write(temp[0]+"," +str(waitTime))
@@ -82,12 +82,16 @@ while True:
         data = []
         for row in range(centerX-25,centerX):
             for col in range(centerY-25,centerY+25):
-                r, g, b = cropped[row, col]
+                #print(cropped[row,col])
+                r, g, b,x = cropped[row, col]
                 #print(f"Pixel {row*25+col} at (row {row}, col {col}): [{r}, {g}, {b}]")
                 newline = [r,g,b]
                 data.append(newline)
-                cropped[row,col] = (255,0,0)
+                cropped[row,col] = (0,0,255,0)
         saveImgData(UNKNOWN_CAT,data)
+        saveImgData(TIGER_DATA,data)
+        compareImgData(TIGER_DATA,UNKNOWN_CAT)
+        waitTime("waitTime.txt",tiger)
         print(len(faces))
     
     cv2.imshow('img',img)

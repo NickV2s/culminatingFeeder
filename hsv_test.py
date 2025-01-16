@@ -1,14 +1,9 @@
 import cv2
-import json
 import matplotlib.pyplot as plt
 TIGER_DATA = "TigerData.txt"
 PENNY_DATA = "PennyData.txt"
 UNKNOWN_CAT = "Cat.txt"
 def saveImgData(filename:str,data:list):
-    # with open(filename, 'wb') as myfile:
-    #     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-    #     wr.writerow(data)
-    # jsonStr = json.dumps(data)
     dataStr = str(data)
     f = open(filename, "w")
     for line in data:
@@ -38,17 +33,15 @@ def compareImgData(file1:str,file2:str):
     catData1=readImgData(file1)
     catData2=readImgData(file2)
     for i in range(0,5000):
-        if catData1[i] == catData2[i]:
-            percentage+=1
-    percentage = percentage/50.0
+        for j in range(0,5000):
+            if catData1[i] == catData2[j]:
+                percentage+=1
+    percentage = percentage/2500.0
     return percentage
-img1 = cv2.imread("Tiger.jpg")
+img1 = cv2.imread("pennyTest.jpg")
 img2 = cv2.imread("pennyTest.jpg")
 face_cascade = cv2.CascadeClassifier("catfacesExtended.xml")
 rgb = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
-#plt.figure()
-#gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2HSV)
-#gray = cv2.resize(gray,(480,640))
 faces = face_cascade.detectMultiScale(rgb,1.2,2,minSize=(100,100))
 
 for (x,y,w,h) in faces:  
@@ -58,27 +51,16 @@ for (x,y,w,h) in faces:
     centerX = int(w/2)
     centerY = int(h/2) 
     data = []
-    for row in range(centerX-120,centerX-70):
+    for row in range(centerX-220,centerX-170):
         for col in range(centerY-50,centerY+50):
             r, g, b = cropped[row, col]
             print(f"Pixel {row*25+col} at (row {row}, col {col}): [{r}, {g}, {b}]")
             newline = [r,g,b]
-            #data.append(f"[{r},{g},{b}]")
-            # if row!=centerX+24 and col!=centerY+24:
-            #     newline=newline+",\n\r"
             data.append(newline)
             cropped[row,col] = (255,0,0)
-    # for i in range(1,50):
-    #     for j in range(1,50):
-    #         tests = cropped[[centerX+j,centerY+i]]
-    #         #hsv = cv2.cvtColor(tests, cv2.COLOR_RGB2HSV) 
-    #         print(tests[0][0])
-    #         data.append(tests[0][0])
-    #         cropped[centerY+j,centerX+i] = (255,0,0)
-
     saveImgData(UNKNOWN_CAT,data)
-    #saveImgData(PENNY_DATA, data)
-    print(compareImgData(UNKNOWN_CAT,TIGER_DATA))
+    saveImgData(PENNY_DATA, data)
+    #print(compareImgData(UNKNOWN_CAT,TIGER_DATA))
     print(compareImgData(UNKNOWN_CAT,PENNY_DATA))
 
     print(len(faces))

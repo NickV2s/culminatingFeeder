@@ -76,19 +76,8 @@ Seq2[7] = [1,0,0,1]
 # Choose a sequence to use
 Seq = Seq2
 StepCount = StepCount2
-    
-if __name__ == '__main__' :
-    nbStepsPerRev=384 #2048=360 degrees
-    str="not done"
-    while str!="done":
-        str = input("Who are you?")
-        if str=="0005094453":
-            openLid(nbStepsPerRev)
-            openLid(nbStepsPerRev)
-            openLid(nbStepsPerRev)
-            time.sleep(1.0)
-            closeLid(nbStepsPerRev)
-            closeLid(nbStepsPerRev)
-            closeLid(nbStepsPerRev)
-        else:
-            print("incorrect")
+def foodDispense(amount:int):
+        nbStepsPerRev = 384*amount
+        openLid(nbStepsPerRev)
+        closeLid(nbStepsPerRev)
+        return True

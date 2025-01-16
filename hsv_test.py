@@ -1,17 +1,44 @@
 import cv2
+import json
 import matplotlib.pyplot as plt
 TIGER_DATA = "TigerData.txt"
 PENNY_DATA = "PennyData.txt"
 UNKNOWN_CAT = "Cat.txt"
-# import numpy as np
-def saveArray(filename:str,data:str):
+def saveImgData(filename:str,data:list):
+    # with open(filename, 'wb') as myfile:
+    #     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+    #     wr.writerow(data)
+    # jsonStr = json.dumps(data)
+    dataStr = str(data)
     f = open(filename, "w")
-    f.write(data)
+    for line in data:
+        f.write("%s\n" % line)
     f.close()
-def readArray(filename:str):
+def readImgData(filename:str):
+    data = []
     f = open(filename, "r")
-    data=(f.read())
+    while True:
+        line=f.readline()
+        if len(line)==0:
+            break
+        else:
+            newDataLine = [0,0,0]
+            tempLine=line.replace(']\n','').split(',')
+            rValue=tempLine[0].strip(',[]')
+            gValue=tempLine[1].strip(',[]')
+            bValue=tempLine[2].strip(',[]\n]')
+            newDataLine[0]=int(rValue)
+            newDataLine[1]=int(gValue)
+            newDataLine[2]=int(bValue)
+
+            data.append(newDataLine)
     return data     
+def compareImgData(file1:str,file2:str):
+    percentage = 0.0
+    catData1=readImgData(file1)
+    catData2=readImgData(file2)
+
+    return percentage
 img1 = cv2.imread("pennyTest.jpg")
 img2 = cv2.imread("pennyTest.jpg")
 face_cascade = cv2.CascadeClassifier("catfacesExtended.xml")
@@ -32,7 +59,11 @@ for (x,y,w,h) in faces:
         for col in range(centerY-25,centerY+25):
             r, g, b = cropped[row, col]
             print(f"Pixel {row*25+col} at (row {row}, col {col}): [{r}, {g}, {b}]")
-            data.append(f"[{r},{g},{b}]")
+            newline = [r,g,b]
+            #data.append(f"[{r},{g},{b}]")
+            # if row!=centerX+24 and col!=centerY+24:
+            #     newline=newline+",\n\r"
+            data.append(newline)
             cropped[row,col] = (255,0,0)
     # for i in range(1,50):
     #     for j in range(1,50):
@@ -42,7 +73,10 @@ for (x,y,w,h) in faces:
     #         data.append(tests[0][0])
     #         cropped[centerY+j,centerX+i] = (255,0,0)
 
-    saveArray(UNKNOWN_CAT,str(data))
+    saveImgData(UNKNOWN_CAT,data)
+    pennyList=readImgData(PENNY_DATA)
+    print(pennyList)
+
     print(len(faces))
 plt.imshow(cropped)
 plt.show()

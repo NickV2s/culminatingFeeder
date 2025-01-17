@@ -76,13 +76,13 @@ penny = [0,2,2]
 tiger = [1,2,1] 
 #load classifier and set up camera
 face_cascade = cv2.CascadeClassifier('catfacesExtended.xml')
+cv2.startWindowThread()
 picam2 = Picamera2()
 camera_config = picam2.create_preview_configuration(main={"format": "XRGB8888", "size": (640,480)})
 picam2.configure(camera_config)
 picam2.start()
 #loop to contantly run and check for cats
 while True:
-    cv2.startWindowThread()
     img = picam2.capture_array()
     #looks for cat faces in image
     faces = face_cascade.detectMultiScale(img,1.2,2,minSize=(30,30))
@@ -119,4 +119,8 @@ while True:
     #Shows image to user then starts loop again after 0.5 seconds and closes image
     cv2.imshow('img',img)
     time.sleep (0.5)
-    cv2.destroyAllWindows
+    #Reverted changes key
+    key = cv2.waitKey(0)
+    if key == 27:  
+        break
+cv2.destroyAllWindows

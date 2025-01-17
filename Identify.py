@@ -8,6 +8,12 @@ from picamera2 import Picamera2
 TIGER_DATA = "TigerData.txt"
 PENNY_DATA = "PennyData.txt"
 UNKNOWN_CAT = "Cat.txt"
+#Constants used to test dispensing without updating file with last dispensing time
+DISPENSE_LAST_TIME = False
+#Constants used to test dispensing without dispensing
+DISPENSE_FOOD = False
+#Percent threshold to dispense
+PERCENT_DISPENSE = 5
 #Function to save image data to txt file
 def saveImgData(filename:str,data:list):
     dataStr = str(data)
@@ -61,15 +67,24 @@ def waitTime(filename,cat:list):
     #gets time they can eat again at
     waitTime=datetime.strptime(temp[cat[0]], "%Y-%m-%d %H:%M:%S.%f")
     if time>=waitTime:
-        dispense(cat[1])
+        if DISPENSE_FOOD:
+            dispense(cat[1])
+        else:
+            print("Test - would call func: dispense("+ str(cat[1]) + ")" )    
         waitTime = time + timedelta(hours=cat[2])
         print(waitTime)
-    f = open(filename, "w")
-    if cat[0]==0:
-        f.write(str(waitTime) +"," + temp[1])
-    else:
-        f.write(temp[0]+"," +str(waitTime))
-    f.close()
+
+    if DISPENSE_LAST_TIME:
+        f = open(filename, "w")
+        if cat[0]==0:
+            f.write(str(waitTime) +"," + temp[1])
+        else:
+            f.write(temp[0]+"," +str(waitTime))
+        f.close()
+    #else:
+    #    print(tigerMatch)
+    #    print(pennyMatch)
+        
     return True
 #arrays for cats representing identity, food amount, and wait time in hours
 penny = [0,2,2]
@@ -103,19 +118,24 @@ while True:
                 #sets section to red so user can see what has been added to data
                 cropped[row,col] = (0,0,255,0)
         #saves the data to txt file
-        #saveImgData(UNKNOWN_CAT,data)
-        saveImgData(PENNY_DATA, data)
+        saveImgData(UNKNOWN_CAT,data)
+        #saveImgData(PENNY_DATA, data)
         #compares data of unknown cat to known cats
         tigerMatch=compareImgData(TIGER_DATA,UNKNOWN_CAT)
-        pennyMatch=compareImgData(PENNY_DATA,UNKNOWN_CAT)            
+        pennyMatch=compareImgData(PENNY_DATA,UNKNOWN_CAT)
+        print(tigerMatch)
+        print(pennyMatch)
         #checks percentage and picks one with higher percent match
         #Dispenses food and updates wait time
-        #if tigerMatch>pennyMatch:
-            #waitTime("waitTime.txt",tiger)
-        #elif pennyMatch>tigerMatch:
-            #waitTime("waitTime.txt",penny)
-        #else:
-            #continue
+        if tigerMatch>pennyMatch and tigerMatch>PERCENT_DISPENSE:
+            waitTime("waitTime.txt",tiger)
+        elif pennyMatch>tigerMatch and pennyMatch>PERCENT_DISPENSE:
+            waitTime("waitTime.txt",penny)
+        elif DISPENSE_FOOD == False :
+            print ("Test - No Match")
+        else:
+            continue
+         
     #Shows image to user then starts loop again after 0.5 seconds and closes image
     cv2.imshow('img',img)
     key = cv2.waitKey(1)

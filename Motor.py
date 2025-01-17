@@ -1,10 +1,11 @@
 #go to https://www.aranacorp.com/en/control-a-stepper-with-raspberrypi/
 # 28BYJ-48 step motor
+#Import libraries
 import time
 import RPi.GPIO as GPIO
 
     
-    
+#central function for turning the motor
 def steps(nb):
     StepCounter = 0
     if nb<0: sign=-1
@@ -27,13 +28,13 @@ def steps(nb):
                     StepCounter = StepCount-1
             # Wait before moving on
             time.sleep(WaitTime)
-
+#makes sure the motor stops moving
 def stopMotor():
     for pin in StepPins:
             GPIO.output(pin, False)
             
 def openLid(nbStepsPerRev):
-    steps(-nbStepsPerRev)# Turn Not clockwise
+    steps(-nbStepsPerRev)# Turn Counter clockwise
     time.sleep(1)
     stopMotor()
 
@@ -76,7 +77,9 @@ Seq2[7] = [1,0,0,1]
 # Choose a sequence to use
 Seq = Seq2
 StepCount = StepCount2
+#Function to dispense food using food amount given
 def foodDispense(amount:int):
+        #384 is about 68 degress and we multiply that by the amount of food and call the other functions
         nbStepsPerRev = 384*amount
         openLid(nbStepsPerRev)
         closeLid(nbStepsPerRev)

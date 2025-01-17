@@ -104,7 +104,7 @@ while True:
                 cropped[row,col] = (0,0,255,0)
         #saves the data to txt file
         saveImgData(UNKNOWN_CAT,data)
-        saveImgData(TIGER_DATA, data)
+        #saveImgData(TIGER_DATA, data)
         #compares data of unknown cat to known cats
         tigerMatch=compareImgData(TIGER_DATA,UNKNOWN_CAT)
         pennyMatch=compareImgData(PENNY_DATA,UNKNOWN_CAT)            
@@ -118,9 +118,10 @@ while True:
             continue
     #Shows image to user then starts loop again after 0.5 seconds and closes image
     cv2.imshow('img',img)
-    time.sleep (0.5)
+    key = cv2.waitKey(1)
+
+    #time.sleep (2.0)
     #Reverted changes key
-    key = cv2.waitKey(0)
-    if key == 27:  
-        break
-cv2.destroyAllWindows
+    #if key == 27:  
+        #break
+    cv2.destroyAllWindows

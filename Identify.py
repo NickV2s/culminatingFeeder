@@ -104,6 +104,7 @@ while True:
                 cropped[row,col] = (0,0,255,0)
         #saves the data to txt file
         saveImgData(UNKNOWN_CAT,data)
+        saveImgData(TIGER_DATA, data)
         #compares data of unknown cat to known cats
         tigerMatch=compareImgData(TIGER_DATA,UNKNOWN_CAT)
         pennyMatch=compareImgData(PENNY_DATA,UNKNOWN_CAT)            

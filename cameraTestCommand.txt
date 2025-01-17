@@ -1,0 +1,3 @@
+libcamera-still -o test.jpg
+
+source: https://raspberrytips.com/troubleshooting-camera-module/

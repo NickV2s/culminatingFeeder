@@ -103,19 +103,19 @@ while True:
                 #sets section to red so user can see what has been added to data
                 cropped[row,col] = (0,0,255,0)
         #saves the data to txt file
-        saveImgData(UNKNOWN_CAT,data)
-        #saveImgData(TIGER_DATA, data)
+        #saveImgData(UNKNOWN_CAT,data)
+        saveImgData(PENNY_DATA, data)
         #compares data of unknown cat to known cats
         tigerMatch=compareImgData(TIGER_DATA,UNKNOWN_CAT)
         pennyMatch=compareImgData(PENNY_DATA,UNKNOWN_CAT)            
         #checks percentage and picks one with higher percent match
         #Dispenses food and updates wait time
-        if tigerMatch>pennyMatch:
-            waitTime("waitTime.txt",tiger)
-        elif pennyMatch>tigerMatch:
-            waitTime("waitTime.txt",penny)
-        else:
-            continue
+        #if tigerMatch>pennyMatch:
+            #waitTime("waitTime.txt",tiger)
+        #elif pennyMatch>tigerMatch:
+            #waitTime("waitTime.txt",penny)
+        #else:
+            #continue
     #Shows image to user then starts loop again after 0.5 seconds and closes image
     cv2.imshow('img',img)
     key = cv2.waitKey(1)

@@ -9,9 +9,9 @@ TIGER_DATA = "TigerData.txt"
 PENNY_DATA = "PennyData.txt"
 UNKNOWN_CAT = "Cat.txt"
 #Constants used to test dispensing without updating file with last dispensing time
-DISPENSE_LAST_TIME = False
+DISPENSE_LAST_TIME = True
 #Constants used to test dispensing without dispensing
-DISPENSE_FOOD = False
+DISPENSE_FOOD = True
 #Percent threshold to dispense
 PERCENT_DISPENSE = 0.001
 #Function to save image data to txt file

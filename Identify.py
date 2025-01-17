@@ -13,7 +13,7 @@ DISPENSE_LAST_TIME = False
 #Constants used to test dispensing without dispensing
 DISPENSE_FOOD = False
 #Percent threshold to dispense
-PERCENT_DISPENSE = 5
+PERCENT_DISPENSE = 0.001
 #Function to save image data to txt file
 def saveImgData(filename:str,data:list):
     dataStr = str(data)
@@ -51,7 +51,7 @@ def compareImgData(file1:str,file2:str):
             if catData1[i] == catData2[j]:
                 #Percentage is used as an integer value of how similar the unknown cat is to the saved data
                 percentage+=1
-    percentage = percentage/15625.0
+    percentage = (percentage/1562500.0)*100
     return percentage
 #function to dispense food by accessing functions in Motor.py
 def dispense(food):
@@ -88,7 +88,7 @@ def waitTime(filename,cat:list):
     return True
 #arrays for cats representing identity, food amount, and wait time in hours
 penny = [0,2,2]
-tiger = [1,2,1] 
+tiger = [1,3,1] 
 #load classifier and set up camera
 face_cascade = cv2.CascadeClassifier('catfacesExtended.xml')
 cv2.startWindowThread()
@@ -119,7 +119,7 @@ while True:
                 cropped[row,col] = (0,0,255,0)
         #saves the data to txt file
         saveImgData(UNKNOWN_CAT,data)
-        #saveImgData(PENNY_DATA, data)
+        #saveImgData(TIGER_DATA, data)
         #compares data of unknown cat to known cats
         tigerMatch=compareImgData(TIGER_DATA,UNKNOWN_CAT)
         pennyMatch=compareImgData(PENNY_DATA,UNKNOWN_CAT)
